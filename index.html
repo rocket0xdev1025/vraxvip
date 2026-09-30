@@ -30,7 +30,8 @@
         },
       },
     };
-  </script>
+  </script> 
+  <script>document.documentElement.classList.add("js");</script>
   <style>
     :root { color-scheme: dark; }
     body {
@@ -40,12 +41,14 @@
     }
     .text-glow {
       text-shadow: 0 0 18px rgba(0, 240, 122, 0.55);
+      animation: glow-breathe 3.2s ease-in-out infinite;
     }
     .hud-grid {
       background-image:
         linear-gradient(rgba(0, 240, 122, 0.07) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 240, 122, 0.07) 1px, transparent 1px);
       background-size: 56px 56px;
+      animation: grid-drift 22s linear infinite;
     }
     .scanlines {
       background: repeating-linear-gradient(
@@ -55,6 +58,7 @@
         transparent 2px,
         transparent 4px
       );
+      animation: scan-drift 8s linear infinite;
     }
     .chamfer {
       clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
@@ -65,6 +69,8 @@
         #00f07a 0 12px,
         #03150d 12px 24px
       );
+      background-size: 34px 34px;
+      animation: hazard-move 0.9s linear infinite;
     }
     .marquee-track {
       animation: ticker 28s linear infinite;
@@ -75,7 +81,7 @@
     }
     @keyframes pulse-ring {
       0% { transform: scale(0.85); opacity: 0.7; }
-      100% { transform: scale(1.35); opacity: 0; }
+      100% { transform: scale(1.45); opacity: 0; }
     }
     .pulse-ring { animation: pulse-ring 2.4s ease-out infinite; }
     @keyframes blink {
@@ -83,22 +89,240 @@
       60%, 100% { opacity: 0.25; }
     }
     .blink { animation: blink 1.6s steps(1) infinite; }
+    @keyframes glow-breathe {
+      0%, 100% { text-shadow: 0 0 12px rgba(0, 240, 122, 0.35); }
+      50% { text-shadow: 0 0 28px rgba(0, 240, 122, 0.85), 0 0 48px rgba(0, 240, 122, 0.35); }
+    }
+    @keyframes grid-drift {
+      from { background-position: 0 0, 0 0; }
+      to { background-position: 56px 56px, 56px 56px; }
+    }
+    @keyframes scan-drift {
+      from { background-position: 0 0; }
+      to { background-position: 0 8px; }
+    }
+    @keyframes hazard-move {
+      to { background-position: 34px 0; }
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(32px); filter: blur(8px); }
+      to { opacity: 1; transform: none; filter: none; }
+    }
+    @keyframes rise-right {
+      from { opacity: 0; transform: translateX(48px) scale(0.96); filter: blur(8px); }
+      to { opacity: 1; transform: none; filter: none; }
+    }
+    @keyframes drop {
+      from { opacity: 0; transform: translateY(-100%); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+    @keyframes spin-slow {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes kb {
+      from { transform: scale(1) translateY(0); }
+      to { transform: scale(1.08) translateY(-2%); }
+    }
+    @keyframes sweep {
+      from { top: -30%; }
+      to { top: 120%; }
+    }
+    @keyframes shine {
+      0%, 55% { left: -70%; }
+      100% { left: 140%; }
+    }
+    @keyframes border-glow {
+      0%, 100% { box-shadow: inset 0 0 0 1px rgba(0, 240, 122, 0.06), 0 20px 60px rgba(0, 0, 0, 0.35); }
+      50% { box-shadow: inset 0 0 0 1px rgba(0, 240, 122, 0.28), 0 0 32px rgba(0, 240, 122, 0.16), 0 20px 60px rgba(0, 0, 0, 0.35); }
+    }
+    @keyframes num-pulse {
+      0%, 100% { text-shadow: 0 0 0 transparent; transform: scale(1); }
+      50% { text-shadow: 0 0 18px rgba(0, 240, 122, 0.7); transform: scale(1.06); }
+    }
+    @keyframes glitch-a {
+      0%, 86%, 100% { transform: translate(0); opacity: 0; }
+      88% { transform: translate(-3px, 1px); opacity: 0.85; }
+      90% { transform: translate(3px, -1px); opacity: 0.5; }
+      92% { transform: translate(-2px, 0); opacity: 0; }
+    }
+    @keyframes glitch-b {
+      0%, 86%, 100% { transform: translate(0); opacity: 0; }
+      89% { transform: translate(3px, -1px); opacity: 0.75; }
+      91% { transform: translate(-4px, 1px); opacity: 0.4; }
+      93% { transform: translate(0); opacity: 0; }
+    }
+    @keyframes orbit {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes bar-up {
+      from { transform: translateY(110%); }
+      to { transform: none; }
+    }
+    .boot { opacity: 0; animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .boot-right { opacity: 0; animation: rise-right 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .boot-bar { animation: drop 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .dock { animation: bar-up 0.7s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .d1 { animation-delay: 0.08s; }
+    .d2 { animation-delay: 0.2s; }
+    .d3 { animation-delay: 0.32s; }
+    .d4 { animation-delay: 0.46s; }
+    .d5 { animation-delay: 0.58s; }
+    .d6 { animation-delay: 0.72s; }
+    .d7 { animation-delay: 0.86s; }
+    .d8 { animation-delay: 1s; }
+    .logo-float { animation: floaty 4.6s ease-in-out infinite; }
+    .orbit-ring {
+      position: absolute;
+      inset: -6px;
+      border: 1px dashed rgba(0, 240, 122, 0.55);
+      border-radius: 999px;
+      animation: orbit 12s linear infinite;
+      pointer-events: none;
+    }
+    .kb { animation: kb 16s ease-in-out infinite alternate; }
+    .step-no {
+      display: inline-block;
+      animation: num-pulse 2.8s ease-in-out infinite;
+    }
+    .glitch { position: relative; display: inline-block; }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .glitch::before {
+      color: #b7ffd8;
+      animation: glitch-a 3.4s infinite linear;
+      clip-path: inset(10% 0 55% 0);
+    }
+    .glitch::after {
+      color: #00f07a;
+      animation: glitch-b 3.4s infinite linear;
+      clip-path: inset(55% 0 8% 0);
+    }
     .panel {
+      position: relative;
       background: linear-gradient(180deg, rgba(2, 22, 12, 0.82), rgba(1, 10, 6, 0.78));
       border: 1px solid rgba(0, 240, 122, 0.28);
       box-shadow: inset 0 0 0 1px rgba(0, 240, 122, 0.06), 0 20px 60px rgba(0, 0, 0, 0.35);
       backdrop-filter: blur(10px);
+      animation: border-glow 4.8s ease-in-out infinite;
     }
+    .sweep { overflow: hidden; }
+    .sweep::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -30%;
+      height: 28%;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(0, 240, 122, 0.2), transparent);
+      animation: sweep 4.2s linear infinite;
+    }
+    .btn-shine { position: relative; overflow: hidden; }
+    .btn-shine::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -70%;
+      width: 38%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      transform: skewX(-18deg);
+      animation: shine 3.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .lift {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.4s ease;
+    }
+    .lift:hover {
+      transform: translateY(-8px);
+      border-color: rgba(0, 240, 122, 0.7);
+      box-shadow: 0 16px 40px rgba(0, 240, 122, 0.16);
+    }
+    .nav-link { position: relative; transition: color 0.25s ease; }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 100%;
+      height: 1px;
+      background: #00f07a;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .icon-pop { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease; }
+    .icon-pop:hover { transform: translateY(-3px) scale(1.08); box-shadow: 0 0 18px rgba(0, 240, 122, 0.35); }
+    .link-slide { transition: color 0.25s ease, transform 0.25s ease; }
+    .link-slide:hover { transform: translateX(6px); }
     .corner {
       position: absolute;
       width: 18px;
       height: 18px;
       pointer-events: none;
+      z-index: 3;
     }
     .corner-tl { top: -1px; left: -1px; border-top: 2px solid #00f07a; border-left: 2px solid #00f07a; }
     .corner-tr { top: -1px; right: -1px; border-top: 2px solid #00f07a; border-right: 2px solid #00f07a; }
     .corner-bl { bottom: -1px; left: -1px; border-bottom: 2px solid #00f07a; border-left: 2px solid #00f07a; }
     .corner-br { bottom: -1px; right: -1px; border-bottom: 2px solid #00f07a; border-right: 2px solid #00f07a; }
+    .js .reveal,
+    .js .reveal-left,
+    .js .reveal-right,
+    .js .reveal-scale {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(36px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s ease;
+    }
+    .js .reveal-left { transform: translateX(-52px); }
+    .js .reveal-right { transform: translateX(52px); }
+    .js .reveal-scale { transform: translateY(24px) scale(0.94); }
+    .js .reveal.show,
+    .js .reveal-left.show,
+    .js .reveal-right.show,
+    .js .reveal-scale.show {
+      opacity: 1;
+      filter: none;
+      transform: none;
+    }
+    .js .stagger > * {
+      opacity: 0;
+      filter: blur(6px);
+      transform: translateY(28px) scale(0.97);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
+    }
+    .js .stagger.show > * { opacity: 1; filter: none; transform: none; }
+    .js .stagger.show > :nth-child(1) { transition-delay: 0.05s; }
+    .js .stagger.show > :nth-child(2) { transition-delay: 0.16s; }
+    .js .stagger.show > :nth-child(3) { transition-delay: 0.27s; }
+    .js .stagger.show > :nth-child(4) { transition-delay: 0.38s; }
+    .js .stagger.show > :nth-child(5) { transition-delay: 0.49s; }
+    .js .stagger.show > .lift:hover { transform: translateY(-8px); }
+    .mobile-drawer {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      border-color: transparent;
+      transition: max-height 0.4s ease, opacity 0.35s ease, border-color 0.35s ease;
+    }
+    .mobile-drawer.open { max-height: 220px; opacity: 1; border-color: rgba(0, 240, 122, 0.2); }
+    #bridge-stage { perspective: 1200px; }
+    #bridge {
+      transform-style: preserve-3d;
+      transition: transform 0.45s ease-out;
+    }
     #toast {
       transform: translateY(12px);
       opacity: 0;
@@ -109,9 +333,18 @@
       opacity: 1;
       transform: translateY(0);
     }
+    .copy-ca.copied { animation: num-pulse 0.45s ease; }
     @media (prefers-reduced-motion: reduce) {
-      .marquee-track, .pulse-ring, .blink { animation: none; }
-      #bg-video { display: none; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .boot, .boot-right, .js .reveal, .js .reveal-left, .js .reveal-right, .js .reveal-scale, .js .stagger > * {
+        opacity: 1 !important;
+        filter: none !important;
+        transform: none !important;
+      }
+      #bg-video, #dust { display: none; }
     }
   </style>
 </head>
@@ -130,13 +363,17 @@
   <div class="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-black/80 via-[#02140c]/75 to-black/85"></div>
   <div class="hud-grid pointer-events-none fixed inset-0 -z-10 opacity-70"></div>
   <div class="scanlines pointer-events-none fixed inset-0 -z-10"></div>
+  <canvas id="dust" class="pointer-events-none fixed inset-0 -z-10" aria-hidden="true"></canvas>
 
   <div class="hazard h-1.5 w-full"></div>
 
-  <header class="sticky top-0 z-50 border-b border-acid/25 bg-black/55 backdrop-blur-md">
+  <header class="boot-bar sticky top-0 z-50 border-b border-acid/25 bg-black/55 backdrop-blur-md">
     <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-      <a href="#top" class="flex items-center gap-3">
-        <img src="logo.png" alt="Commander Vrax logo" class="h-11 w-11 rounded-full object-cover ring-2 ring-acid/80" />
+      <a href="#top" class="group flex items-center gap-3">
+        <span class="relative">
+          <span class="orbit-ring"></span>
+          <img src="logo.png" alt="Commander Vrax logo" class="logo-float h-11 w-11 rounded-full object-cover ring-2 ring-acid/80 transition duration-300 group-hover:scale-110" />
+        </span>
         <span class="leading-none">
           <span class="block font-display text-sm font-bold tracking-[0.18em] text-acid text-glow">VRAX</span>
           <span class="block text-xs font-semibold uppercase tracking-[0.22em] text-mist/80">Space Army</span>
@@ -144,20 +381,20 @@
       </a>
 
       <nav class="hidden items-center gap-7 font-display text-[11px] font-bold uppercase tracking-[0.22em] text-mist/90 lg:flex">
-        <a href="#about" class="hover:text-acid">About</a>
-        <a href="#buy" class="hover:text-acid">How to Buy</a>
-        <a href="#signal" class="hover:text-acid">Signal</a>
-        <a href="#chart" class="hover:text-acid">Chart</a>
+        <a href="#about" class="nav-link hover:text-acid">About</a>
+        <a href="#buy" class="nav-link hover:text-acid">How to Buy</a>
+        <a href="#signal" class="nav-link hover:text-acid">Signal</a>
+        <a href="#chart" class="nav-link hover:text-acid">Chart</a>
       </nav>
 
       <div class="flex items-center gap-2">
-        <a href="https://x.com/VraxCommander" target="_blank" rel="noopener noreferrer" class="grid h-9 w-9 place-items-center border border-acid/40 bg-black hover:border-acid" aria-label="Commander Vrax on X">
+        <a href="https://x.com/VraxCommander" target="_blank" rel="noopener noreferrer" class="icon-pop grid h-9 w-9 place-items-center border border-acid/40 bg-black hover:border-acid" aria-label="Commander Vrax on X">
           <img src="x.png" alt="" class="h-4 w-4 object-contain" />
         </a>
-        <a href="https://t.me/VraxCommander" target="_blank" rel="noopener noreferrer" class="grid h-9 w-9 place-items-center overflow-hidden border border-acid/40 hover:border-acid" aria-label="Commander Vrax on Telegram">
+        <a href="https://t.me/VraxCommander" target="_blank" rel="noopener noreferrer" class="icon-pop grid h-9 w-9 place-items-center overflow-hidden border border-acid/40 hover:border-acid" aria-label="Commander Vrax on Telegram">
           <img src="tg.png" alt="" class="h-9 w-9 object-cover" />
         </a>
-        <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="chamfer hidden bg-acid px-4 py-2 font-display text-[11px] font-bold uppercase tracking-[0.18em] text-black shadow-glow hover:bg-mist sm:inline-flex">
+        <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="btn-shine chamfer hidden bg-acid px-4 py-2 font-display text-[11px] font-bold uppercase tracking-[0.18em] text-black shadow-glow transition hover:-translate-y-0.5 hover:bg-mist sm:inline-flex">
           Buy Now
         </a>
         <button id="menu-btn" class="grid h-9 w-9 place-items-center border border-acid/40 text-acid lg:hidden" aria-label="Open menu" aria-expanded="false">
@@ -167,12 +404,12 @@
         </button>
       </div>
     </div>
-    <div id="mobile-menu" class="hidden border-t border-acid/20 bg-black/90 px-4 py-4 lg:hidden">
-      <div class="flex flex-col gap-3 font-display text-sm uppercase tracking-[0.2em]">
-        <a href="#about" class="mobile-link">About</a>
-        <a href="#buy" class="mobile-link">How to Buy</a>
-        <a href="#signal" class="mobile-link">Signal</a>
-        <a href="#chart" class="mobile-link">Chart</a>
+    <div id="mobile-menu" class="mobile-drawer border-t border-acid/20 bg-black/90 lg:hidden">
+      <div class="flex flex-col gap-3 px-4 py-4 font-display text-sm uppercase tracking-[0.2em]">
+        <a href="#about" class="mobile-link link-slide">About</a>
+        <a href="#buy" class="mobile-link link-slide">How to Buy</a>
+        <a href="#signal" class="mobile-link link-slide">Signal</a>
+        <a href="#chart" class="mobile-link link-slide">Chart</a>
       </div>
     </div>
   </header>
@@ -195,51 +432,52 @@
   <main id="top">
     <section class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 lg:grid-cols-2 lg:py-20">
       <div>
-        <p class="mb-4 inline-flex items-center gap-2 border border-acid/40 bg-black/40 px-3 py-1 font-display text-[11px] uppercase tracking-[0.28em] text-acid">
+        <p class="boot d1 mb-4 inline-flex items-center gap-2 border border-acid/40 bg-black/40 px-3 py-1 font-display text-[11px] uppercase tracking-[0.28em] text-acid">
           <span class="blink inline-block h-2 w-2 rounded-full bg-acid"></span>
           Fleet status: active duty
         </p>
-        <p class="font-display text-xs font-bold uppercase tracking-[0.42em] text-mist/80">Project designation</p>
-        <h1 class="mt-2 font-display text-4xl font-black uppercase leading-none tracking-[0.08em] text-white sm:text-6xl">
+        <p class="boot d2 font-display text-xs font-bold uppercase tracking-[0.42em] text-mist/80">Project designation</p>
+        <h1 class="boot d3 mt-2 font-display text-4xl font-black uppercase leading-none tracking-[0.08em] text-white sm:text-6xl">
           Commander<br />
-          <span class="text-acid text-glow">Vrax</span>
+          <span class="glitch text-acid text-glow" data-text="Vrax">Vrax</span>
         </h1>
-        <p class="mt-4 max-w-xl text-2xl font-semibold leading-tight text-mist sm:text-3xl">
+        <p class="boot d4 mt-4 max-w-xl text-2xl font-semibold leading-tight text-mist sm:text-3xl">
           Commander-in-Chief of Robinhood
         </p>
-        <p class="mt-4 max-w-xl text-lg leading-relaxed text-white/80">
+        <p class="boot d5 mt-4 max-w-xl text-lg leading-relaxed text-white/80">
           The space army has a new high command. Commander Vrax seized the bridge, raised the $VRAX standard, and now issues orders across Robinhood Chain. Recruits deploy Robinhood ETH. The fleet answers with $VRAX.
         </p>
 
-        <div class="mt-6 flex flex-wrap items-center gap-3">
+        <div class="boot d6 mt-6 flex flex-wrap items-center gap-3">
           <span class="border border-acid/50 bg-acid/10 px-4 py-2 font-display text-sm font-bold tracking-[0.28em] text-acid">$VRAX</span>
           <span class="border border-white/15 px-4 py-2 font-display text-xs uppercase tracking-[0.2em] text-mist/80">Chain · Robinhood</span>
         </div>
 
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="chamfer inline-flex items-center gap-2 bg-acid px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.2em] text-black shadow-glow transition hover:-translate-y-0.5 hover:bg-mist">
+        <div class="boot d7 mt-8 flex flex-wrap gap-3">
+          <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="btn-shine chamfer inline-flex items-center gap-2 bg-acid px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.2em] text-black shadow-glow transition hover:-translate-y-1 hover:bg-mist hover:shadow-[0_0_36px_rgba(0,240,122,0.55)]">
             Buy Now
           </a>
-          <a href="https://dexscreener.com/robinhood/TBA" target="_blank" rel="noopener noreferrer" class="chamfer inline-flex items-center gap-2 border border-acid bg-black/50 px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.2em] text-acid transition hover:bg-acid hover:text-black">
+          <a href="https://dexscreener.com/robinhood/TBA" target="_blank" rel="noopener noreferrer" class="chamfer inline-flex items-center gap-2 border border-acid bg-black/50 px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.2em] text-acid transition hover:-translate-y-1 hover:bg-acid hover:text-black hover:shadow-glow">
             Chart
           </a>
         </div>
 
-        <div class="mt-6 flex items-center gap-3">
-          <a href="https://t.me/VraxCommander" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 border border-acid/30 bg-black/40 pr-4 transition hover:border-acid">
-            <img src="tg.png" alt="" class="h-11 w-11 object-cover" />
-            <span class="font-display text-xs uppercase tracking-[0.18em] text-mist group-hover:text-acid">Telegram</span>
+        <div class="boot d8 mt-6 flex items-center gap-3">
+          <a href="https://t.me/VraxCommander" target="_blank" rel="noopener noreferrer" class="icon-pop group flex items-center gap-2 border border-acid/30 bg-black/40 pr-4 hover:border-acid">
+            <img src="tg.png" alt="" class="h-11 w-11 object-cover transition duration-300 group-hover:scale-110" />
+            <span class="font-display text-xs uppercase tracking-[0.18em] text-mist transition group-hover:text-acid">Telegram</span>
           </a>
-          <a href="https://x.com/VraxCommander" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 border border-acid/30 bg-black/40 py-1 pl-1 pr-4 transition hover:border-acid">
-            <img src="x.png" alt="" class="h-9 w-9 bg-black object-contain" />
-            <span class="font-display text-xs uppercase tracking-[0.18em] text-mist group-hover:text-acid">X</span>
+          <a href="https://x.com/VraxCommander" target="_blank" rel="noopener noreferrer" class="icon-pop group flex items-center gap-2 border border-acid/30 bg-black/40 py-1 pl-1 pr-4 hover:border-acid">
+            <img src="x.png" alt="" class="h-9 w-9 bg-black object-contain transition duration-300 group-hover:rotate-6 group-hover:scale-110" />
+            <span class="font-display text-xs uppercase tracking-[0.18em] text-mist transition group-hover:text-acid">X</span>
           </a>
         </div>
       </div>
 
-      <div class="relative">
+      <div id="bridge-stage" class="boot-right d4 relative">
         <div class="pulse-ring pointer-events-none absolute -inset-4 border border-acid/30"></div>
-        <div class="panel relative overflow-hidden">
+        <div class="pulse-ring pointer-events-none absolute -inset-4 border border-acid/20" style="animation-delay: 0.8s"></div>
+        <div id="bridge" class="panel sweep relative overflow-hidden">
           <span class="corner corner-tl"></span>
           <span class="corner corner-tr"></span>
           <span class="corner corner-bl"></span>
@@ -248,10 +486,10 @@
             <span>Bridge cam · 01</span>
             <span>Cmd. Vrax</span>
           </div>
-          <img src="banner.png" alt="Commander Vrax on the command bridge" class="aspect-[16/7] w-full object-cover sm:aspect-[2/1]" />
+          <img src="banner.png" alt="Commander Vrax on the command bridge" class="kb aspect-[16/7] w-full object-cover sm:aspect-[2/1]" />
           <div class="flex items-center justify-between px-4 py-3">
             <div class="flex items-center gap-3">
-              <img src="logo.png" alt="" class="h-12 w-12 rounded-full object-cover ring-2 ring-acid" />
+              <img src="logo.png" alt="" class="logo-float h-12 w-12 rounded-full object-cover ring-2 ring-acid" />
               <div>
                 <p class="font-display text-sm font-bold tracking-[0.16em] text-white">COMMANDER VRAX</p>
                 <p class="text-sm text-acid">Commander-in-Chief of Robinhood</p>
@@ -263,7 +501,7 @@
       </div>
     </section>
 
-    <section class="mx-auto max-w-6xl px-4 pb-6">
+    <section class="reveal mx-auto max-w-6xl px-4 pb-6">
       <div class="panel relative flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <span class="corner corner-tl"></span>
         <span class="corner corner-tr"></span>
@@ -273,14 +511,14 @@
           <p class="font-display text-[10px] uppercase tracking-[0.32em] text-acid">Contract address · Robinhood Chain</p>
           <p id="contract" class="mt-1 truncate font-display text-lg font-bold tracking-[0.14em] text-white sm:text-2xl">TBA</p>
         </div>
-        <button type="button" class="copy-ca chamfer shrink-0 bg-acid px-6 py-3 font-display text-xs font-bold uppercase tracking-[0.22em] text-black hover:bg-mist" data-label="Copy CA">
+        <button type="button" class="copy-ca btn-shine chamfer shrink-0 bg-acid px-6 py-3 font-display text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:-translate-y-0.5 hover:bg-mist" data-label="Copy CA">
           Copy CA
         </button>
       </div>
     </section>
 
     <section id="about" class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 lg:grid-cols-2">
-      <div class="panel relative order-2 overflow-hidden lg:order-1">
+      <div class="panel sweep reveal-left relative order-2 overflow-hidden lg:order-1">
         <span class="corner corner-tl"></span>
         <span class="corner corner-tr"></span>
         <span class="corner corner-bl"></span>
@@ -289,9 +527,9 @@
           <span>Personnel file</span>
           <span>Clearance: fleet</span>
         </div>
-        <img src="about.png" alt="Commander Vrax, Commander-in-Chief of Robinhood, in command robes with a green energy blade" class="w-full object-cover" />
+        <img src="about.png" alt="Commander Vrax, Commander-in-Chief of Robinhood, in command robes with a green energy blade" class="kb w-full object-cover" />
       </div>
-      <div class="order-1 lg:order-2">
+      <div class="reveal-right order-1 lg:order-2">
         <p class="font-display text-xs uppercase tracking-[0.36em] text-acid">About the commander</p>
         <h2 class="mt-2 font-display text-3xl font-black uppercase tracking-[0.08em] text-white sm:text-4xl">
           High command of the Robinhood fleet
@@ -302,20 +540,20 @@
         <p class="mt-4 text-lg leading-relaxed text-white/75">
           $VRAX is the standard of that space army. It lives on Robinhood Chain and is acquired with Robinhood ETH. The order from high command is simple — enlist, swap, and stand with the Commander-in-Chief.
         </p>
-        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
-          <li class="border border-acid/25 bg-black/35 px-4 py-3">
+        <ul class="stagger mt-6 grid gap-3 sm:grid-cols-2">
+          <li class="lift border border-acid/25 bg-black/35 px-4 py-3">
             <p class="font-display text-[10px] uppercase tracking-[0.24em] text-acid">Rank</p>
             <p class="text-lg font-semibold">Commander-in-Chief</p>
           </li>
-          <li class="border border-acid/25 bg-black/35 px-4 py-3">
+          <li class="lift border border-acid/25 bg-black/35 px-4 py-3">
             <p class="font-display text-[10px] uppercase tracking-[0.24em] text-acid">Theater</p>
             <p class="text-lg font-semibold">Robinhood Chain</p>
           </li>
-          <li class="border border-acid/25 bg-black/35 px-4 py-3">
+          <li class="lift border border-acid/25 bg-black/35 px-4 py-3">
             <p class="font-display text-[10px] uppercase tracking-[0.24em] text-acid">Call sign</p>
             <p class="text-lg font-semibold">$VRAX</p>
           </li>
-          <li class="border border-acid/25 bg-black/35 px-4 py-3">
+          <li class="lift border border-acid/25 bg-black/35 px-4 py-3">
             <p class="font-display text-[10px] uppercase tracking-[0.24em] text-acid">Fuel</p>
             <p class="text-lg font-semibold">Robinhood ETH</p>
           </li>
@@ -324,7 +562,7 @@
     </section>
 
     <section id="buy" class="mx-auto max-w-6xl px-4 py-16">
-      <div class="mb-10 max-w-3xl">
+      <div class="reveal mb-10 max-w-3xl">
         <p class="font-display text-xs uppercase tracking-[0.36em] text-acid">Mission briefing</p>
         <h2 class="mt-2 font-display text-3xl font-black uppercase tracking-[0.08em] text-white sm:text-4xl">How to Buy $VRAX</h2>
         <p class="mt-4 text-lg leading-relaxed text-white/80">
@@ -332,42 +570,42 @@
         </p>
       </div>
 
-      <ol class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <li class="panel relative p-5">
+      <ol class="stagger grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <li class="panel lift relative p-5">
           <span class="corner corner-tl"></span>
           <span class="corner corner-br"></span>
-          <p class="font-display text-3xl font-black text-acid">01</p>
+          <p class="step-no font-display text-3xl font-black text-acid">01</p>
           <h3 class="mt-3 font-display text-sm font-bold uppercase tracking-[0.18em]">Enlist a wallet</h3>
           <p class="mt-2 text-base leading-relaxed text-white/75">Install MetaMask or another EVM wallet. That wallet is your dog tag for the Robinhood fleet.</p>
         </li>
-        <li class="panel relative p-5">
+        <li class="panel lift relative p-5">
           <span class="corner corner-tl"></span>
           <span class="corner corner-br"></span>
-          <p class="font-display text-3xl font-black text-acid">02</p>
+          <p class="step-no font-display text-3xl font-black text-acid" style="animation-delay: 0.4s">02</p>
           <h3 class="mt-3 font-display text-sm font-bold uppercase tracking-[0.18em]">Load Robinhood ETH</h3>
           <p class="mt-2 text-base leading-relaxed text-white/75">Bridge or transfer ETH onto Robinhood Chain. Robinhood ETH is the only fuel this buy order accepts.</p>
         </li>
-        <li class="panel relative p-5">
+        <li class="panel lift relative p-5">
           <span class="corner corner-tl"></span>
           <span class="corner corner-br"></span>
-          <p class="font-display text-3xl font-black text-acid">03</p>
+          <p class="step-no font-display text-3xl font-black text-acid" style="animation-delay: 0.8s">03</p>
           <h3 class="mt-3 font-display text-sm font-bold uppercase tracking-[0.18em]">Open the armory</h3>
           <p class="mt-2 text-base leading-relaxed text-white/75">Hit Buy Now. Uniswap opens on Robinhood Chain with $VRAX selected. Connect the wallet you enlisted.</p>
         </li>
-        <li class="panel relative p-5">
+        <li class="panel lift relative p-5">
           <span class="corner corner-tl"></span>
           <span class="corner corner-br"></span>
-          <p class="font-display text-3xl font-black text-acid">04</p>
+          <p class="step-no font-display text-3xl font-black text-acid" style="animation-delay: 1.2s">04</p>
           <h3 class="mt-3 font-display text-sm font-bold uppercase tracking-[0.18em]">Execute the swap</h3>
           <p class="mt-2 text-base leading-relaxed text-white/75">Enter your Robinhood ETH amount, match the contract address, and confirm. $VRAX reports for duty in your wallet.</p>
         </li>
       </ol>
 
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="chamfer inline-flex bg-acid px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.2em] text-black shadow-glow hover:bg-mist">
+      <div class="reveal mt-8 flex flex-wrap gap-3">
+        <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="btn-shine chamfer inline-flex bg-acid px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.2em] text-black shadow-glow transition hover:-translate-y-1 hover:bg-mist">
           Buy Now
         </a>
-        <button type="button" class="copy-ca chamfer border border-acid px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.2em] text-acid hover:bg-acid hover:text-black">
+        <button type="button" class="copy-ca chamfer border border-acid px-7 py-3.5 font-display text-sm font-bold uppercase tracking-[0.2em] text-acid transition hover:-translate-y-1 hover:bg-acid hover:text-black">
           Copy CA
         </button>
       </div>
@@ -375,18 +613,18 @@
 
     <section id="signal" class="mx-auto max-w-6xl px-4 py-16">
       <div class="grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <div>
+        <div class="reveal-left">
           <p class="font-display text-xs uppercase tracking-[0.36em] text-acid">Incoming transmission</p>
           <h2 class="mt-2 font-display text-3xl font-black uppercase tracking-[0.08em] text-white sm:text-4xl">Robinhood signal</h2>
           <p class="mt-4 text-lg leading-relaxed text-white/80">
             Command monitors the Robinhood channel. The Commander-in-Chief does not miss a dispatch — especially one from Robinhood itself.
           </p>
-          <a href="https://x.com/RobinhoodApp/status/2105077426481222125" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-3 border border-acid/40 bg-black/40 py-2 pl-2 pr-4 hover:border-acid">
+          <a href="https://x.com/RobinhoodApp/status/2105077426481222125" target="_blank" rel="noopener noreferrer" class="icon-pop mt-6 inline-flex items-center gap-3 border border-acid/40 bg-black/40 py-2 pl-2 pr-4 hover:border-acid">
             <img src="x.png" alt="" class="h-8 w-8 bg-black object-contain" />
             <span class="font-display text-xs uppercase tracking-[0.18em] text-mist">Open transmission on X</span>
           </a>
         </div>
-        <div class="panel relative min-h-[280px] p-4 sm:p-6">
+        <div class="panel reveal-right relative min-h-[280px] p-4 sm:p-6">
           <span class="corner corner-tl"></span>
           <span class="corner corner-tr"></span>
           <span class="corner corner-bl"></span>
@@ -399,17 +637,17 @@
     </section>
 
     <section id="chart" class="mx-auto max-w-6xl px-4 py-16">
-      <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div class="reveal mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p class="font-display text-xs uppercase tracking-[0.36em] text-acid">Tactical display</p>
           <h2 class="mt-2 font-display text-3xl font-black uppercase tracking-[0.08em] text-white sm:text-4xl">$VRAX Chart</h2>
           <p class="mt-3 max-w-xl text-lg text-white/75">Live Dexscreener readout for Commander Vrax on Robinhood Chain.</p>
         </div>
-        <a href="https://dexscreener.com/robinhood/TBA" target="_blank" rel="noopener noreferrer" class="chamfer inline-flex border border-acid px-6 py-3 font-display text-xs font-bold uppercase tracking-[0.2em] text-acid hover:bg-acid hover:text-black">
+        <a href="https://dexscreener.com/robinhood/TBA" target="_blank" rel="noopener noreferrer" class="chamfer inline-flex border border-acid px-6 py-3 font-display text-xs font-bold uppercase tracking-[0.2em] text-acid transition hover:-translate-y-1 hover:bg-acid hover:text-black">
           Open Chart
         </a>
       </div>
-      <div class="panel relative overflow-hidden">
+      <div class="panel reveal-scale relative overflow-hidden">
         <span class="corner corner-tl"></span>
         <span class="corner corner-tr"></span>
         <span class="corner corner-bl"></span>
@@ -430,10 +668,10 @@
 
   <footer class="mt-8 border-t border-acid/25 bg-black/60">
     <div class="hazard h-1.5 w-full"></div>
-    <div class="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 md:flex-row md:items-start md:justify-between">
+    <div class="stagger mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 md:flex-row md:items-start md:justify-between">
       <div class="max-w-md">
         <div class="flex items-center gap-3">
-          <img src="logo.png" alt="" class="h-12 w-12 rounded-full object-cover ring-2 ring-acid/70" />
+          <img src="logo.png" alt="" class="logo-float h-12 w-12 rounded-full object-cover ring-2 ring-acid/70" />
           <div>
             <p class="font-display text-lg font-black tracking-[0.14em] text-acid">COMMANDER VRAX</p>
             <p class="text-sm text-mist">Commander-in-Chief of Robinhood · $VRAX</p>
@@ -445,27 +683,27 @@
       </div>
       <div class="flex flex-col gap-3">
         <p class="font-display text-[10px] uppercase tracking-[0.28em] text-acid">Comms</p>
-        <a href="https://t.me/VraxCommander" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 hover:text-acid">
-          <img src="tg.png" alt="" class="h-8 w-8 rounded-full object-cover" />
+        <a href="https://t.me/VraxCommander" target="_blank" rel="noopener noreferrer" class="link-slide inline-flex items-center gap-3 hover:text-acid">
+          <img src="tg.png" alt="" class="h-8 w-8 rounded-full object-cover transition duration-300 hover:scale-110" />
           Telegram
         </a>
-        <a href="https://x.com/VraxCommander" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 hover:text-acid">
+        <a href="https://x.com/VraxCommander" target="_blank" rel="noopener noreferrer" class="link-slide inline-flex items-center gap-3 hover:text-acid">
           <img src="x.png" alt="" class="h-8 w-8 bg-black object-contain" />
           X / Twitter
         </a>
       </div>
       <div class="flex flex-col gap-3">
         <p class="font-display text-[10px] uppercase tracking-[0.28em] text-acid">Orders</p>
-        <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="hover:text-acid">Buy $VRAX</a>
-        <a href="https://dexscreener.com/robinhood/TBA" target="_blank" rel="noopener noreferrer" class="hover:text-acid">Dexscreener chart</a>
-        <button type="button" class="copy-ca text-left hover:text-acid">Copy contract</button>
+        <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="link-slide hover:text-acid">Buy $VRAX</a>
+        <a href="https://dexscreener.com/robinhood/TBA" target="_blank" rel="noopener noreferrer" class="link-slide hover:text-acid">Dexscreener chart</a>
+        <button type="button" class="copy-ca link-slide text-left hover:text-acid">Copy contract</button>
       </div>
     </div>
     <p class="border-t border-white/10 py-4 text-center text-sm text-white/50">© <span id="year"></span> Commander Vrax. All rights reserved to the fleet.</p>
   </footer>
 
-  <div class="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-acid/30 bg-black/85 p-3 backdrop-blur lg:hidden">
-    <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="chamfer flex-1 bg-acid py-3 text-center font-display text-xs font-bold uppercase tracking-[0.16em] text-black">Buy Now</a>
+  <div class="dock fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-acid/30 bg-black/85 p-3 backdrop-blur lg:hidden">
+    <a href="https://app.uniswap.org/swap?chain=robinhood&outputCurrency=TBA" target="_blank" rel="noopener noreferrer" class="btn-shine chamfer flex-1 bg-acid py-3 text-center font-display text-xs font-bold uppercase tracking-[0.16em] text-black">Buy Now</a>
     <a href="https://dexscreener.com/robinhood/TBA" target="_blank" rel="noopener noreferrer" class="chamfer flex-1 border border-acid py-3 text-center font-display text-xs font-bold uppercase tracking-[0.16em] text-acid">Chart</a>
     <button type="button" class="copy-ca chamfer flex-1 border border-acid/50 py-3 font-display text-xs font-bold uppercase tracking-[0.16em] text-mist">Copy</button>
   </div>
@@ -481,14 +719,15 @@
     const menuBtn = document.getElementById("menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
     menuBtn.addEventListener("click", () => {
-      const open = mobileMenu.classList.toggle("hidden") === false;
+      const open = mobileMenu.classList.toggle("open");
       menuBtn.setAttribute("aria-expanded", String(open));
       menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     });
     document.querySelectorAll(".mobile-link").forEach((link) => {
       link.addEventListener("click", () => {
-        mobileMenu.classList.add("hidden");
+        mobileMenu.classList.remove("open");
         menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.setAttribute("aria-label", "Open menu");
       });
     });
 
@@ -518,8 +757,86 @@
     }
 
     document.querySelectorAll(".copy-ca").forEach((btn) => {
-      btn.addEventListener("click", copyContract);
+      btn.addEventListener("click", () => {
+        copyContract();
+        btn.classList.remove("copied");
+        void btn.offsetWidth;
+        btn.classList.add("copied");
+      });
     });
+
+    const motionOK = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (motionOK) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("show");
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
+
+      document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger").forEach((el) => io.observe(el));
+
+      const bridge = document.getElementById("bridge");
+      if (bridge && window.matchMedia("(pointer: fine)").matches) {
+        const stage = document.getElementById("bridge-stage");
+        stage.addEventListener("mousemove", (event) => {
+          const rect = stage.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width - 0.5;
+          const y = (event.clientY - rect.top) / rect.height - 0.5;
+          bridge.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 8}deg)`;
+        });
+        stage.addEventListener("mouseleave", () => {
+          bridge.style.transform = "rotateY(0deg) rotateX(0deg)";
+        });
+      }
+
+      const canvas = document.getElementById("dust");
+      const ctx = canvas.getContext("2d");
+      let specks = [];
+      let dustFrame;
+
+      function sizeDust() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        specks = Array.from({ length: 72 }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.5 + 0.3,
+          s: Math.random() * 0.45 + 0.08,
+          a: Math.random() * 0.45 + 0.12,
+        }));
+      }
+
+      function drawDust() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        specks.forEach((speck) => {
+          speck.y -= speck.s;
+          speck.x += Math.sin(speck.y * 0.02) * 0.2;
+          if (speck.y < -4) {
+            speck.y = canvas.height + 4;
+            speck.x = Math.random() * canvas.width;
+          }
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(0, 240, 122, ${speck.a})`;
+          ctx.arc(speck.x, speck.y, speck.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        dustFrame = requestAnimationFrame(drawDust);
+      }
+
+      sizeDust();
+      drawDust();
+      window.addEventListener("resize", sizeDust);
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          cancelAnimationFrame(dustFrame);
+        } else {
+          drawDust();
+        }
+      });
+    }
   </script>
 </body>
 </html>
